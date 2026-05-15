@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎂 A Birthday Surprise Just For You</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
+</head>
+<body data-theme="dark">
+
+  <!-- Custom cursor -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Background particles canvas -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Progress bar -->
+  <div class="progress-bar-wrap" id="progressBarWrap">
+    <div class="progress-bar" id="progressBar"></div>
+    <span class="progress-label" id="progressLabel">0%</span>
+  </div>
+
+  <!-- Top controls -->
+  <div class="top-controls">
+    <button class="ctrl-btn" id="themeToggle" title="Toggle theme">🌙</button>
+    <button class="ctrl-btn" id="musicToggle" title="Toggle music">🎵</button>
+  </div>
+
+  <!-- Floating messages -->
+  <div class="floating-messages" id="floatingMessages"></div>
+
+  <!-- Loading screen (love.exe) -->
+  <div class="screen active" id="loadingScreen">
+    <div class="loading-card glass">
+      <div class="exe-header">
+        <span class="exe-dot red"></span>
+        <span class="exe-dot yellow"></span>
+        <span class="exe-dot green"></span>
+        <span class="exe-title">love.exe</span>
+      </div>
+      <div class="exe-body">
+        <p class="exe-line" id="exeLine1">Initializing birthday module…</p>
+        <p class="exe-line" id="exeLine2"></p>
+        <p class="exe-line" id="exeLine3"></p>
+        <div class="exe-bar-wrap"><div class="exe-bar" id="exeBar"></div></div>
+        <p class="exe-pct" id="exePct">0%</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Landing / Hero Screen -->
+  <div class="screen" id="landingScreen">
+    <div class="hero-content">
+      <div class="balloon-row">
+        <span class="balloon b1">🎈</span>
+        <span class="balloon b2">🎈</span>
+        <span class="balloon b3">🎈</span>
+        <span class="balloon b4">🎈</span>
+        <span class="balloon b5">🎈</span>
+      </div>
+      <h1 class="hero-title" id="heroTitle"></h1>
+      <p class="hero-sub" id="heroSub"></p>
+      <button class="glow-btn pulse-btn" id="startBtn">✨ Start the Surprise ✨</button>
+    </div>
+  </div>
+
+  <!-- Question 1 -->
+  <div class="screen" id="q1Screen">
+    <div class="question-card glass">
+      <div class="q-emoji">👀</div>
+      <p class="q-text">I got something <em>really</em> special for you…</p>
+      <div class="btn-row">
+        <button class="yes-btn" data-q="1">Yes! 🙌</button>
+        <button class="no-btn" data-q="1">No 🙄</button>
+      </div>
+    </div>
+    <!-- Funny popup -->
+    <div class="funny-popup glass" id="popup1" style="display:none;">
+      <p>Bruh… really? 😭</p>
+      <div class="arrow-wrap">
+        <span class="arrow-anim">⬇️</span>
+        <button class="back-btn" data-target="q1Screen">Go Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question 2 -->
+  <div class="screen" id="q2Screen">
+    <div class="question-card glass">
+      <div class="q-emoji">🎁</div>
+      <p class="q-text">Are you ready for the <strong>best birthday surprise ever?</strong></p>
+      <div class="btn-row">
+        <button class="yes-btn" id="q2Yes" data-q="2">Yes! 🎉</button>
+        <button class="no-btn shake-target" id="q2No" data-q="2">No 😑</button>
+      </div>
+    </div>
+    <div class="funny-popup glass" id="popup2" style="display:none;">
+      <p>That's illegal. Try again 😤</p>
+    </div>
+  </div>
+
+  <!-- Question 3 -->
+  <div class="screen" id="q3Screen">
+    <div class="question-card glass">
+      <div class="q-emoji">💖</div>
+      <p class="q-text">Do you <em>trust</em> me?</p>
+      <div class="btn-row">
+        <button class="yes-btn" data-q="3">Yes, always 💗</button>
+        <button class="no-btn dodge-btn" data-q="3">No 😅</button>
+      </div>
+    </div>
+    <div class="funny-popup glass dark-popup" id="popup3" style="display:none;">
+      <p id="popup3Text">Mission failed… friendship damaged 💔</p>
+    </div>
+  </div>
+
+  <!-- Mini loading between screens -->
+  <div class="screen" id="miniLoadScreen">
+    <div class="mini-load-card glass">
+      <div class="spinner"></div>
+      <p class="mini-load-text" id="miniLoadText">Loading magic…</p>
+    </div>
+  </div>
+
+  <!-- Final Surprise Screen -->
+  <div class="screen" id="finalScreen">
+    <canvas id="fireworksCanvas"></canvas>
+    <div class="final-inner">
+
+      <!-- Big birthday heading -->
+      <h1 class="big-bday" id="bigBday"></h1>
+      <p class="bday-sub">🎂 Today is your day! 🎂</p>
+
+      <!-- Typewriter message -->
+      <div class="typewriter-card glass">
+        <p class="typewriter-text" id="typewriterText"></p>
+      </div>
+
+      <!-- Countdown / "Time since awesome" -->
+      <div class="countdown-card glass">
+        <p class="countdown-label">⏳ Time since you became awesome</p>
+        <div class="countdown-digits" id="countdownDigits">
+          <div class="digit-box"><span id="cdYears">00</span><small>years</small></div>
+          <div class="digit-box"><span id="cdMonths">00</span><small>months</small></div>
+          <div class="digit-box"><span id="cdDays">00</span><small>days</small></div>
+          <div class="digit-box"><span id="cdHours">00</span><small>hours</small></div>
+          <div class="digit-box"><span id="cdMins">00</span><small>mins</small></div>
+          <div class="digit-box"><span id="cdSecs">00</span><small>secs</small></div>
+        </div>
+      </div>
+
+      <!-- Cake illustration -->
+      <div class="cake-wrap">
+        <div class="cake">
+          <div class="cake-top"></div>
+          <div class="cake-mid"></div>
+          <div class="cake-bot"></div>
+          <div class="candle"><div class="flame"></div></div>
+        </div>
+      </div>
+
+      <!-- Photo gallery slider -->
+      <div class="gallery-section">
+        <h2 class="section-title">📸 Memory Lane</h2>
+        <div class="gallery-slider" id="gallerySlider">
+          <div class="gallery-slide active">
+            <img class="photo" src="images/photo1.jpg" alt="First adventure" />
+          </div>
+          <div class="gallery-slide">
+            <img class="photo" src="images/photo2.jpg" alt="That crazy party" />
+          </div>
+          <div class="gallery-slide">
+            <img class="photo" src="images/photo3.jpg" alt="Late night food runs" />
+          </div>
+          <div class="gallery-slide">
+            <img class="photo" src="images/photo4.jpg" alt="Pookie" />
+          </div>
+          <div class="gallery-slide">
+            <img class="photo" src="images/photo5.jpg" alt="Our travels" />
+          </div>
+        </div>
+        <div class="gallery-dots" id="galleryDots"></div>
+        <div class="gallery-nav">
+          <button class="gnav-btn" id="gPrev">‹</button>
+          <button class="gnav-btn" id="gNext">›</button>
+        </div>
+      </div>
+
+      <!-- Reasons you're special -->
+      <div class="reasons-section">
+        <h2 class="section-title">💫 Why You're Special</h2>
+        <div class="reasons-grid" id="reasonsGrid"></div>
+      </div>
+
+      <!-- Animated timeline -->
+      <div class="timeline-section">
+        <h2 class="section-title">🕰️ Our Timeline</h2>
+        <div class="timeline" id="timeline"></div>
+      </div>
+
+      <!-- Surprise gift button -->
+      <div class="gift-section">
+        <button class="gift-btn glow-btn" id="giftBtn">🎁 Open Your Surprise Gift 🎁</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Gift Modal -->
+  <div class="modal-overlay" id="giftModal">
+    <div class="modal-card glass">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-inner">
+        <div class="gift-icon-big">🎁</div>
+        <h2 class="modal-title">Your Special Gift</h2>
+        <p class="modal-message" id="modalMessage"></p>
+        <div class="heart-rain" id="heartRain"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Easter Egg Modal -->
+  <div class="modal-overlay" id="easterModal">
+    <div class="modal-card glass">
+      <button class="modal-close" id="easterClose">✕</button>
+      <div class="modal-inner">
+        <div class="gift-icon-big">🌟</div>
+        <h2 class="modal-title">You found the Easter Egg! 🥚</h2>
+        <p class="modal-message">Shhh… you're the chosen one. This star was placed here just for curious souls like you. Happy Birthday, explorer! 🚀✨</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti container -->
+  <div id="confettiContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
